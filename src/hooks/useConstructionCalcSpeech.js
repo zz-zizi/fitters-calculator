@@ -1,34 +1,24 @@
 import { useCallback } from 'react';
 import useSpeechRecognition from './useSpeechRecognition';
 
-const useConstructionCalcSpeech = (setFeet, setInches, setFraction, setSecondaryDisplay) => {
+const useConstructionCalcSpeech = (setFeet, setInches, setFraction) => {
   const processCommand = useCallback((command) => {
     console.log('Processing command:', command);
 
-    const regex = /(\d+)?\s*(?:feet|foot|ft)?\s*(?:(\d+)\s*(?:(\d+)\s*\/\s*(\d+))?)?\s*(?:inches|inch|in)?/i;
+    const regex = /(\d+)\s*(?:feet|foot|ft|')?\s*(\d+)?\s*(?:(\d+)\s*\/\s*(\d+))?\s*(?:inches|inch|in|")?/i;
     const match = command.match(regex);
 
     if (match) {
       const [_, feet, wholeInches, numerator, denominator] = match;
+      console.log('Match groups:', { feet, wholeInches, numerator, denominator });
 
       let newFeet = feet ? parseInt(feet) : 0;
-      let totalInches = 0;
+      let totalInches = wholeInches ? parseInt(wholeInches) : 0;
 
-      if (wholeInches) {
-        totalInches += parseInt(wholeInches);
-      }
       if (numerator && denominator) {
         totalInches += parseInt(numerator) / parseInt(denominator);
       }
-
-      if (totalInches >= 12) {
-        newFeet += Math.floor(totalInches / 12);
-        totalInches = totalInches % 12;
-      }
-
-      setFeet(newFeet);
-      setInches(Math.floor(totalInches));
-
+      
       const fractionalPart = totalInches % 1;
       if (fractionalPart > 0) {
         const fractions = [
@@ -45,13 +35,10 @@ const useConstructionCalcSpeech = (setFeet, setInches, setFraction, setSecondary
         setFraction({ numerator: 0, denominator: 1 });
       }
 
-      setSecondaryDisplay(`${newFeet}' ${Math.floor(totalInches)}" ${closestFraction.numerator}/${closestFraction.denominator}`);
-
-      console.log(`Recognized: ${newFeet} feet ${Math.floor(totalInches)} ${closestFraction.numerator}/${closestFraction.denominator} inches`);
-    } else {
-      console.log("Command not recognized");
+      setFeet(newFeet);
+      setInches(Math.floor(totalInches));
     }
-  }, [setFeet, setInches, setFraction, setSecondaryDisplay]);
+  }, [setFeet, setInches, setFraction]);
 
   const { isListening, transcript, isSpeechSupported, toggleListening } = useSpeechRecognition(processCommand);
 

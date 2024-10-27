@@ -37,6 +37,13 @@ const ConstructionCalc = () => {
     setFraction({ numerator: newNumerator, denominator: newDenominator });
   };
 
+  const handleClear = () => {
+    setFeet(0);
+    setInches(0);
+    setFraction({ numerator: 0, denominator: 1 });
+    setSecondaryDisplay('0\' 0"');
+  };
+
   return (
     <div className="calculator">
       <Display 
@@ -52,6 +59,7 @@ const ConstructionCalc = () => {
         updateSecondaryDisplay={setSecondaryDisplay}
         activePad={activePad}
         setActivePad={setActivePad}
+        handleClear={handleClear}
       />
       {isSpeechSupported ? (
         <div className="voice-control">
@@ -67,7 +75,15 @@ const ConstructionCalc = () => {
   );
 };
 
-const ButtonGrid = ({ updateFeet, updateInches, handleFractionClick, updateSecondaryDisplay, activePad, setActivePad }) => (
+const ButtonGrid = ({ 
+  updateFeet, 
+  updateInches, 
+  handleFractionClick, 
+  updateSecondaryDisplay, 
+  activePad, 
+  setActivePad,
+  handleClear
+}) => (
   <div className="button-grid">
     <NumberPad 
       updateValue={updateFeet}
@@ -86,6 +102,7 @@ const ButtonGrid = ({ updateFeet, updateInches, handleFractionClick, updateSecon
       updateFeet={updateFeet}
       updateInches={updateInches}
       updateSecondaryDisplay={updateSecondaryDisplay}
+      handleClear={handleClear}
     />
   </div>
 );

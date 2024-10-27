@@ -73,6 +73,39 @@ body {
   font-size: var(--font-size-secondary-display);
 }
 
+.voice-control {
+  position: absolute;
+  top: 50px;
+  left: 0;
+  background-color: var(--color-background-main);
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+
+.voice-control p {
+  color: var(--color-font-main);
+  font-size: var(--font-size-body);
+  padding: 10px;
+  background-color: var(--color-background-main);
+  border-radius: 4px;
+  min-height: 50px;
+}
+
+.voice-control > button {
+  padding: 10px;
+  background-color: var(--color-button-operations);
+  border: var(--button-border-style);
+  color: var(--color-font-main);
+  cursor: pointer;
+  font-size: var(--font-size-operation-button);
+  transition: background-color 0.3s;
+}
+
+.voice-control > button:hover {
+  filter: brightness(110%);
+}
+
 /* Button grid layout */
 .button-grid {
   display: grid;

@@ -60,3 +60,4 @@ const useSpeechRecognition = (onTranscript) => {
 };
 
 export default useSpeechRecognition;
+ 
